@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.*;
+import frc.robot.lib.Constants;
+import frc.robot.lib.LimeLight;
+import frc.robot.subsystems.*;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -21,13 +22,33 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final SwerveDrive SUBSYSTEM_SWERVEDRIVE = new SwerveDrive();
+  private final LimeLight SUBSYSTEM_LIMELIGHT = new LimeLight();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandJoystick JOYSTICK_DRIVER = new CommandJoystick(Constants.OIConstants.CONTROLLER_DRIVER_ID);
+
+  Trigger DRIVER_A = new Trigger(JOYSTICK_DRIVER.button(1));
+  Trigger DRIVER_B = new Trigger(JOYSTICK_DRIVER.button(2));
+  Trigger DRIVER_X = new Trigger(JOYSTICK_DRIVER.button(3));
+  Trigger DRIVER_Y = new Trigger(JOYSTICK_DRIVER.button(4));
+  Trigger DRIVER_L1= new Trigger(JOYSTICK_DRIVER.button(5));
+  Trigger DRIVER_R1= new Trigger(JOYSTICK_DRIVER.button(6));
+  Trigger DRIVER_START= new Trigger(JOYSTICK_DRIVER.button(7));
+  Trigger DRIVER_BACK = new Trigger(JOYSTICK_DRIVER.button(8));
+  Trigger DRIVER_L3 = new Trigger(JOYSTICK_DRIVER.button(9));
+  Trigger DRIVER_R3 = new Trigger(JOYSTICK_DRIVER.button(10));
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    SUBSYSTEM_SWERVEDRIVE.setDefaultCommand(
+      new JoystickDrive(
+        SUBSYSTEM_SWERVEDRIVE, 
+        () -> -JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.CONTROLLER_DRIVER_X), 
+        () -> JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.CONTROLLER_DRIVER_Y), 
+        () -> JOYSTICK_DRIVER.getRawAxis(Constants.OIConstants.CONTROLLER_DRIVER_Z), 
+        () -> true)
+    );
     // Configure the trigger bindings
     configureBindings();
   }
@@ -43,12 +64,20 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+
+    DRIVER_A.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroModuleAngles());
+    DRIVER_B.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroRobotHeading());
+    DRIVER_L1.whileTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
+    DRIVER_R1.whileTrue(new LimeLight_Strafe(SUBSYSTEM_LIMELIGHT, SUBSYSTEM_SWERVEDRIVE));
+    DRIVER_START.onTrue(SUBSYSTEM_LIMELIGHT.changePipeline(0));
+    DRIVER_BACK.onTrue(SUBSYSTEM_LIMELIGHT.changePipeline(1));
+    
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
