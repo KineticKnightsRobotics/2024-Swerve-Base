@@ -39,11 +39,28 @@ public class LimeLight_Strafe extends CommandBase {
     }
     @Override
     public void execute(){
+        //get Limelight Data
+        //0: X displacement
+        //1: Y displacement
+        //2: Z displacement
+
+        // Limelight Z -> Robot Y
+
+        double[] positionalData = SUBSYSTEM_LIMELIGHT.getBotPose_LimeLight();
+
+        double deltaX = positionalData[0];
+        double deltaY = positionalData[2];
 
 
+        //double speedX = 0;
+        //double speedY = 0;
 
-
+        double speedX = strafePID.calculate(deltaX, 0);
+        SmartDashboard.putNumber("speed X", speedX);
         
+        double speedY = strafePID.calculate(deltaY, 1);
+        SmartDashboard.putNumber("speed Y", speedY);
+
         ChassisSpeeds newChassisSpeeds = new ChassisSpeeds(speedX,speedY,0.0);
 
         SUBSYSTEM_SWERVEDRIVE.setChassisSpeed(newChassisSpeeds);

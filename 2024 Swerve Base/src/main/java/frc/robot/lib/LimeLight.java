@@ -3,7 +3,7 @@ package frc.robot.lib;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTablesJNI;
+//import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,7 +20,7 @@ public class LimeLight extends SubsystemBase {
 
     NetworkTableEntry LIMELIGHT_ROBOT_POSE = LIMELIGHT.getEntry("targetpose_robotspace");
 
-    NetworkTableEntry LIMELIGHT_APRILTAG_TRANSLATION = LIMELIGHT.getEntry("targetpose_robotspace");
+    NetworkTableEntry LIMELIGHT_APRILTAG_TRANSLATION = LIMELIGHT.getEntry("camerapose_targetspace");
     //NetworkTableEntry LIMELIGHT_APRILTAG_DISTANCE = 
 
     public LimeLight() {}
@@ -57,7 +57,7 @@ public class LimeLight extends SubsystemBase {
         return LIMELIGHT_TV.getBoolean(false);
     }
     public double[] getBotPose_LimeLight(){
-        return LIMELIGHT_ROBOT_POSE.getDoubleArray(new double[0]);
+        return LIMELIGHT_ROBOT_POSE.getDoubleArray(new double[6]);
     }
     public void setPipeline(double pipelineID){
         LIMELIGHT.getEntry("pipeline").setNumber(pipelineID);

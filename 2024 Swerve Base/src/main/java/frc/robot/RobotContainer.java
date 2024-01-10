@@ -24,6 +24,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveDrive SUBSYSTEM_SWERVEDRIVE = new SwerveDrive();
   private final LimeLight SUBSYSTEM_LIMELIGHT = new LimeLight();
+  private final Intake SUBSYSTEM_INTAKE = new Intake();
 
   private final CommandJoystick JOYSTICK_DRIVER = new CommandJoystick(Constants.OIConstants.CONTROLLER_DRIVER_ID);
 
@@ -71,9 +72,12 @@ public class RobotContainer {
     DRIVER_A.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroModuleAngles());
     DRIVER_B.onTrue(SUBSYSTEM_SWERVEDRIVE.zeroRobotHeading());
     DRIVER_L1.whileTrue(new LimeLight_Steer(SUBSYSTEM_SWERVEDRIVE, SUBSYSTEM_LIMELIGHT));
-    DRIVER_R1.whileTrue(new LimeLight_Strafe(SUBSYSTEM_LIMELIGHT, SUBSYSTEM_SWERVEDRIVE));
+    //DRIVER_R1.whileTrue(new LimeLight_Strafe(SUBSYSTEM_LIMELIGHT, SUBSYSTEM_SWERVEDRIVE));
     DRIVER_START.onTrue(SUBSYSTEM_LIMELIGHT.changePipeline(0));
     DRIVER_BACK.onTrue(SUBSYSTEM_LIMELIGHT.changePipeline(1));
+
+    DRIVER_R1.whileTrue(SUBSYSTEM_INTAKE.runIntake(0.30));
+    DRIVER_R1.whileFalse(SUBSYSTEM_INTAKE.runIntake(0.0));
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

@@ -5,11 +5,11 @@ import java.util.function.DoubleSupplier;
 
 //import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.Constants;
 import frc.robot.subsystems.SwerveDrive;
 
-public class JoystickDrive extends CommandBase {
+public class JoystickDrive extends Command {
 
     private final SwerveDrive subsystem;
     private final DoubleSupplier SUPPLIER_xSpeed;

@@ -39,6 +39,9 @@ public final class Constants {
     public static final double MODULE_DRIVE_RPM_TO_MPS = MODULE_DRIVE_ROTATIONS_TO_METERS / 60.0;
     public static final double TurningEncoderRPM2RadPerSec = MODULE_TURN_ROTATIONS_TO_RADIANS / 60.0;
 }
+  public static final class IntakeSubsystemConstants {
+    public static final int ID_INTAKE_ROLLER = 21;
+  }
 
   public static class SwerveSubsystemConstants {
 
@@ -75,10 +78,10 @@ public final class Constants {
     public static final boolean REVERSED_BACK_RIGHT_MOTOR_DRIVE = true;
 
     // Turning encoder offsets
-    public static final double OFFSET_FRONT_LEFT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
-    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(0.0);
-    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(-50);
-    public static final double OFFSET_BACK_RIGHT_ENCODER_ABSOLUTE = Math.toRadians(0.0);
+    public static final double OFFSET_FRONT_LEFT_ENCODER_ABSOLUTE = Math.toRadians(-90.0);
+    public static final double OFFSET_BACK_LEFT_ENCODER_ABSOLUTE  = Math.toRadians(45.0);
+    public static final double OFFSET_FRONT_RIGHT_ENCODER_ABSOLUTE= Math.toRadians(-45.0);//(55.0);
+    public static final double OFFSET_BACK_RIGHT_ENCODER_ABSOLUTE = Math.toRadians(0.0);//(0.0);
 
     // Robot drive speeds
     public static final double LIMIT_HARD_SPEED_DRIVE = 3.6; // hard limit for speed of chassis

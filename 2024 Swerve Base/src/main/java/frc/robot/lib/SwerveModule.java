@@ -1,11 +1,12 @@
 package frc.robot.lib;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 //pheonix
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.core.CoreCANcoder;
+import com.ctre.phoenix.sensors.CANCoder;
 //rev
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//import com.revrobotics.CANSparkMax.ControlType;
 //wpi
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;

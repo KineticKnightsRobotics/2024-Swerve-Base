@@ -2,13 +2,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.LimeLight;
 import frc.robot.lib.PID_Config;
 //import frc.robot.lib.Constants.Kinematics;
 import frc.robot.subsystems.SwerveDrive;
 
-public class LimeLight_Steer extends CommandBase {
+public class LimeLight_Steer extends Command {
 
     static SwerveDrive SUBSYSTEM_SWERVEDRIVE;
     static LimeLight SUBSYSTEM_LIMELIGHT;
