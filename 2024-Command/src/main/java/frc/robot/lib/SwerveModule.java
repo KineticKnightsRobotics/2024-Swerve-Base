@@ -5,7 +5,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 //rev
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 //import com.revrobotics.CANSparkMax.ControlType;
 //wpi
 import edu.wpi.first.math.controller.PIDController;
@@ -68,17 +68,25 @@ public class SwerveModule extends SubsystemBase {
         //init absolute encoder
         this.ENCODER_ABSOLUTE = new CANCoder(ID_ENCODER_ABSOLUTE);
         ENCODER_ABSOLUTE.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        ENCODER_ABSOLUTE.configMagnetOffset(OFFSET_ENCODER_ABSOLUTE);
         this.OFFSET_ABSOLUTEENCODER = OFFSET_ENCODER_ABSOLUTE;
         //init PID for turning
         this.PID_TURNING = new PIDController(PID_Config.SwereModule.ModuleTurning.Proportional,PID_Config.SwereModule.ModuleTurning.Integral,PID_Config.SwereModule.ModuleTurning.Derivitive);
         PID_TURNING.enableContinuousInput(-Math.PI, Math.PI);
     }
+    public void moduleData2Dashboard(){
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] angle", Math.toDegrees(getTurningPosition()));
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] absolute angle", Math.toDegrees(getAbsoluteEncoder()));
+    }
+
     /** 
      * Resets drive encoder to 0, and turn encoder to absolute encoders value
     */
     public void resetEncoders() {
         ENCODER_DRIVE.setPosition(0);
-        ENCODER_TURN.setPosition(getAbsoluteEncoder());
+        if (ENCODER_ABSOLUTE.getLastError().value == 0) {
+            ENCODER_TURN.setPosition(getAbsoluteEncoder()); // Check for good data, if its okay, then reset.
+        }
     }
     /**
      * Turns SwerveModuleState into turning and driving speed
@@ -90,13 +98,13 @@ public class SwerveModule extends SubsystemBase {
         setAngle(state);
         setSpeed(state);
 
-        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] angle", getTurningPosition());
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] angle", Math.toDegrees(getTurningPosition()));
 
-        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] absolute angle", getAbsoluteEncoder());
+        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] absolute angle", Math.toDegrees(getAbsoluteEncoder()));
 
         SmartDashboard.putString("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] state", state.toString());
 
-        SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] offset", OFFSET_ABSOLUTEENCODER);
+        //SmartDashboard.putNumber("Swerve[" + ENCODER_ABSOLUTE.getDeviceID() + "] offset", OFFSET_ABSOLUTEENCODER);
     }
     /**
      * Set a new angle to the turning motor
